@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -11,114 +12,94 @@ import (
 
 // Complete the queensAttack function below.
 func queensAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
+	limits := cleanInput(n, k, rowQueen, colQueen, obstacles)
 	count := int32(0)
-	count += vAttack(n, k, rowQueen, colQueen, obstacles)
-	count += hAttack(n, k, rowQueen, colQueen, obstacles)
-	count += dAttack(n, k, rowQueen, colQueen, obstacles)
+	for _, v := range limits {
+		count += v
+	}
 	return count
 }
 
-func vAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
-	count := 0
-Pos:
-	for i := rowQueen + 1; i <= n; i++ {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if i == value[0] && colQueen == value[1] {
-				break Pos
+func cleanInput(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) [8]int32 {
+	limits := [8]int32{
+		n - rowQueen,                // + 0
+		rowQueen - 1,                // - 0
+		n - colQueen,                // 0 +
+		colQueen - 1,                // 0 -
+		min(n-rowQueen, n-colQueen), // + +
+		min(n-rowQueen, colQueen-1), // + -
+		min(rowQueen-1, n-colQueen), // - +
+		min(rowQueen-1, colQueen-1), // - -
+	}
+
+	//
+	for _, values := range obstacles {
+
+		rPos := values[0] - rowQueen - 1
+		rNeg := rowQueen - values[0] - 1
+		cPos := values[1] - colQueen - 1
+		cNeg := colQueen - values[1] - 1
+
+		// C0
+		if colQueen == values[1] {
+			// R+
+			if limits[0] > rPos && values[0] > rowQueen {
+				limits[0] = rPos
+			}
+			// R-
+			if limits[1] > rNeg && values[0] < rowQueen {
+				limits[1] = rNeg
 			}
 		}
-		// fmt.Print(i, c)
-		count++
-	}
-Neg:
-	for i := rowQueen - 1; i > 0; i-- {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if i == value[0] && colQueen == value[1] {
-				break Neg
+
+		// R0
+		if rowQueen == values[0] {
+			// C+
+			if limits[2] > cPos && values[1] > colQueen {
+				limits[2] = cPos
+			}
+			// C-
+			if limits[3] > cNeg && values[1] < colQueen {
+				limits[3] = cNeg
 			}
 		}
-		// fmt.Print(i, c)
-		count++
+
+		// Diagonal
+		if intAbs(values[0]-rowQueen) == intAbs(values[1]-colQueen) {
+			// R+ C+
+			if limits[4] > rPos && values[0] > rowQueen &&
+				limits[4] > cPos && values[1] > colQueen {
+				limits[4] = min(rPos, cPos)
+			}
+			// R+ C-
+			if limits[5] > rPos && values[0] > rowQueen &&
+				limits[5] > cNeg && values[1] < colQueen {
+				limits[5] = min(rPos, cNeg)
+			}
+			// R- C+
+			if limits[6] > rNeg && values[0] < rowQueen &&
+				limits[6] > cPos && values[1] > colQueen {
+				limits[6] = min(rNeg, cPos)
+			}
+			// R- C-
+			if limits[7] > rNeg && values[0] < rowQueen &&
+				limits[7] > cNeg && values[1] < colQueen {
+				limits[7] = min(rNeg, cNeg)
+			}
+		}
 	}
-	return int32(count)
+	return limits
 }
 
-func hAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
-	count := 0
-Pos:
-	for i := colQueen + 1; i <= n; i++ {
-		// fmt.Print(i, c)
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen == value[0] && i == value[1] {
-				break Pos
-			}
-		}
-		count++
+func min(v0, v1 int32) int32 {
+	if v0 < v1 {
+		return v0
 	}
-Neg:
-	for i := colQueen - 1; i > 0; i-- {
-		// fmt.Print(i, c)
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen == value[0] && i == value[1] {
-				break Neg
-			}
-		}
-		count++
-	}
-	return int32(count)
+	return v1
 }
 
-func dAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
-	count := 0
-PosPos:
-	for i := int32(1); rowQueen+i <= n && colQueen+i <= n; i++ {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen+i == value[0] && colQueen+i == value[1] {
-				break PosPos
-			}
-		}
-		// fmt.Print(rowQueen + i, colQueen + i)
-		count++
-	}
-PosNeg:
-	for i := int32(1); rowQueen+i <= n && 0 < colQueen-i; i++ {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen+i == value[0] && colQueen-i == value[1] {
-				break PosNeg
-			}
-		}
-		// fmt.Print(rowQueen + i, colQueen - i)
-		count++
-	}
-checkNegPos:
-	for i := int32(1); 0 < rowQueen-i && colQueen+i <= n; i++ {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen-i == value[0] && colQueen+i == value[1] {
-				break checkNegPos
-			}
-		}
-		// fmt.Print(rowQueen - i, colQueen + i)
-		count++
-	}
-checkNegNeg:
-	for i := int32(1); 0 < rowQueen-i && 0 < colQueen-i; i++ {
-		for _, value := range obstacles {
-			// fmt.Print(value)
-			if rowQueen-i == value[0] && colQueen-i == value[1] {
-				break checkNegNeg
-			}
-		}
-		// fmt.Print(rowQueen - i, colQueen - i)
-		count++
-	}
-	return int32(count)
+func intAbs(num int32) float64 {
+	return math.Abs(float64(num))
 }
 
 func main() {
