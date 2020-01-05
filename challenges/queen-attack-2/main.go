@@ -10,60 +10,60 @@ import (
 )
 
 // Complete the queensAttack function below.
-func queensAttack(n int32, k int32, r_q int32, c_q int32, obstacles [][]int32) int32 {
+func queensAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
 	count := int32(0)
-	count += verticalAttack(n, k, r_q, c_q, obstacles)
-	count += horizontalAttack(n, k, r_q, c_q, obstacles)
-	count += diagonalAttack(n, k, r_q, c_q, obstacles)
+	count += vAttack(n, k, rowQueen, colQueen, obstacles)
+	count += hAttack(n, k, rowQueen, colQueen, obstacles)
+	count += dAttack(n, k, rowQueen, colQueen, obstacles)
 	return count
 }
 
-func verticalAttack(n int32, k int32, r int32, c int32, obstacles [][]int32) int32 {
+func vAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
 	count := 0
 Pos:
-	for i := r + 1; i <= n; i++ {
+	for i := rowQueen + 1; i <= n; i++ {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if i == value[0] && c == value[1] {
+			if i == value[0] && colQueen == value[1] {
 				break Pos
 			}
 		}
-		fmt.Print(i, c)
+		// fmt.Print(i, c)
 		count++
 	}
 Neg:
-	for i := r - 1; i > 0; i-- {
+	for i := rowQueen - 1; i > 0; i-- {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if i == value[0] && c == value[1] {
+			if i == value[0] && colQueen == value[1] {
 				break Neg
 			}
 		}
-		fmt.Print(i, c)
+		// fmt.Print(i, c)
 		count++
 	}
 	return int32(count)
 }
 
-func horizontalAttack(n int32, k int32, r int32, c int32, obstacles [][]int32) int32 {
+func hAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
 	count := 0
 Pos:
-	for i := r + 1; i <= n; i++ {
+	for i := colQueen + 1; i <= n; i++ {
 		// fmt.Print(i, c)
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r == value[0] && i == value[1] {
+			if rowQueen == value[0] && i == value[1] {
 				break Pos
 			}
 		}
 		count++
 	}
 Neg:
-	for i := r - 1; i > 0; i-- {
+	for i := colQueen - 1; i > 0; i-- {
 		// fmt.Print(i, c)
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r == value[0] && i == value[1] {
+			if rowQueen == value[0] && i == value[1] {
 				break Neg
 			}
 		}
@@ -72,50 +72,50 @@ Neg:
 	return int32(count)
 }
 
-func diagonalAttack(n int32, k int32, r int32, c int32, obstacles [][]int32) int32 {
+func dAttack(n int32, k int32, rowQueen int32, colQueen int32, obstacles [][]int32) int32 {
 	count := 0
 PosPos:
-	for i := int32(1); r+i <= n && c+i <= n; i++ {
+	for i := int32(1); rowQueen+i <= n && colQueen+i <= n; i++ {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r+i == value[0] && c+i == value[1] {
+			if rowQueen+i == value[0] && colQueen+i == value[1] {
 				break PosPos
 			}
 		}
-		fmt.Print(r+i, c+i)
+		// fmt.Print(rowQueen + i, colQueen + i)
 		count++
 	}
 PosNeg:
-	for i := int32(1); r+i <= n && 0 < c-i; i++ {
+	for i := int32(1); rowQueen+i <= n && 0 < colQueen-i; i++ {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r+i == value[0] && c-i == value[1] {
+			if rowQueen+i == value[0] && colQueen-i == value[1] {
 				break PosNeg
 			}
 		}
-		fmt.Print(r+i, c-i)
+		// fmt.Print(rowQueen + i, colQueen - i)
 		count++
 	}
-NegPos:
-	for i := int32(1); 0 < r-i && c+i <= n; i++ {
+checkNegPos:
+	for i := int32(1); 0 < rowQueen-i && colQueen+i <= n; i++ {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r-i == value[0] && c+i == value[1] {
-				break NegPos
+			if rowQueen-i == value[0] && colQueen+i == value[1] {
+				break checkNegPos
 			}
 		}
-		fmt.Print(r-i, c+i)
+		// fmt.Print(rowQueen - i, colQueen + i)
 		count++
 	}
-NegNeg:
-	for i := int32(1); 0 < r-i && 0 < c-i; i++ {
+checkNegNeg:
+	for i := int32(1); 0 < rowQueen-i && 0 < colQueen-i; i++ {
 		for _, value := range obstacles {
 			// fmt.Print(value)
-			if r-i == value[0] && c-i == value[1] {
-				break NegNeg
+			if rowQueen-i == value[0] && colQueen-i == value[1] {
+				break checkNegNeg
 			}
 		}
-		fmt.Print(r-i, c-i)
+		// fmt.Print(rowQueen - i, colQueen - i)
 		count++
 	}
 	return int32(count)
