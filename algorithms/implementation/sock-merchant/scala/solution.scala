@@ -21,7 +21,7 @@ object Solution {
 
     // Complete the sockMerchant function below.
     def sockMerchant(n: Int, ar: Array[Int]): Int = {
-        val hmap: Map[Int, Int] = ar.groupBy(identity).map{ case (x, y) => x -> y.size }
+        val hmap: Map[Int, Int] = ar.groupBy(identity).mapValues(_.size)
         hmap.values.foldLeft(0)(_ + _/2)
     }
 
