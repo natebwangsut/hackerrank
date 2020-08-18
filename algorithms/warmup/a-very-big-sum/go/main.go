@@ -7,7 +7,7 @@ package main
 
 import "fmt"
 
-func veryBigSum() {
+func main() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	n := 0
 	fmt.Scanf("%v", &n)

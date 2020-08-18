@@ -12,7 +12,7 @@ func sum(a uint32, b uint32) uint32 {
 	return (a + b)
 }
 
-func solveMeFirst() {
+func main() {
 	var a, b, res uint32
 	fmt.Scanf("%v\n%v", &a, &b)
 	res = sum(a, b)

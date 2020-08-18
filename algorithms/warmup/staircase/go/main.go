@@ -7,7 +7,7 @@ package main
 
 import "fmt"
 
-func staircase() {
+func main() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	var num int
 	fmt.Scanf("%v", &num)

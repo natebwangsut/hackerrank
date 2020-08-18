@@ -7,8 +7,8 @@ package main
 
 import "fmt"
 
-func birthdayCakeCandles() {
-	//Enter your code here. Read input from STDIN. Print output to STDOUT
+func main() {
+	// Enter your code here. Read input from STDIN. Print output to STDOUT
 	var n, num, count, height int
 	fmt.Scanf("%v", &n)
 	height = -1

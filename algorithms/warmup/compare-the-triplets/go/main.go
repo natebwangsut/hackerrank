@@ -7,7 +7,7 @@ package main
 
 import "fmt"
 
-func compareTheTriplets() {
+func main() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	var a0, a1, a2, b0, b1, b2 int
 	fmt.Scanf("%v %v %v", &a0, &a1, &a2)

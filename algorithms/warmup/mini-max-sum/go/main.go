@@ -10,7 +10,7 @@ import (
 	"math"
 )
 
-func miniMaxSum() {
+func main() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	var num [5]int64
 
