@@ -14,12 +14,18 @@ __version__ = "1.0.0"
 __maintainer__ = "Nate B. Wangsutthitham"
 __email__ = "nate.bwangsut@gmail.com"
 
-import itertools
+import math
+import os
+import random
+import re
+import sys
 
-line = input()
-line = input().split()
-repeat = int(input())
+# Complete the solve function below.
+def solve(s):
+    return " ".join([i[0].upper() + i[1:] if len(i) > 0 else i for i in s.split(" ")])
 
-com = list(itertools.combinations(line, repeat))
 
-print(sum(("a" in x) for x in com) / len(com))
+# Main
+if __name__ == "__main__":
+    line = input()
+    print(solve(line))

@@ -14,12 +14,5 @@ __version__ = "1.0.0"
 __maintainer__ = "Nate B. Wangsutthitham"
 __email__ = "nate.bwangsut@gmail.com"
 
-import itertools
-
-line = input()
-line = input().split()
-repeat = int(input())
-
-com = list(itertools.combinations(line, repeat))
-
-print(sum(("a" in x) for x in com) / len(com))
+if __name__ == '__main__':
+    # Do something
