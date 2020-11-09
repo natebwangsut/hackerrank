@@ -1,5 +1,5 @@
 
-# Matric Rotation
+# Matrix Rotation
 
 ## Logics
 
