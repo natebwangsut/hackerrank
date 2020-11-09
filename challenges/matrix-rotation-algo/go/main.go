@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -13,8 +14,8 @@ import (
 func matrixRotation(matrix [][]int32, r int32) {
 
 	// Layers = how many rings to rotate (min of width or height / 2)
-	layers := len(matrix) / 2
 	h, w := len(matrix), len(matrix[0])
+	layers := int(math.Min(float64(h/2), float64(w/2)))
 
 	rings := [][]int32{}
 
