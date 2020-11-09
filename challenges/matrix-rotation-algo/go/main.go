@@ -10,6 +10,11 @@ import (
 	"strings"
 )
 
+/*
+ * Nate B. Wangsutthitham
+ * <@natebwangsut | nate.bwangsut@gmail.com>
+ */
+
 // Complete the matrixRotation function below.
 func matrixRotation(matrix [][]int32, r int32) {
 
